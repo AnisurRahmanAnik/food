@@ -1,11 +1,11 @@
 const inputValue = document.getElementById("inputValue"),
   form = document.getElementById("form"),
-  mealsEl = document.getElementById("meals"),
-  resultHeading = document.getElementById("result"),
-  single_mealEl = document.getElementById("mealItem");
-function searchMeal(e) {
-  e.preventDefault();
-  single_mealEl.innerHTML = "";
+  mealsElement = document.getElementById("meals"),
+  result = document.getElementById("result"),
+  mealItem = document.getElementById("mealItem");
+function searchMeal(para) {
+  para.preventDefault();
+ mealItem.innerHTML = "";
   const term = inputValue.value;
   console.log(term);
   if (term.trim()) {
@@ -13,11 +13,11 @@ function searchMeal(e) {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        resultHeading.innerHTML = `<h2>Search results for '${term}':</h2>`;
+        result.innerHTML = `<h2>Search results for '${term}':</h2>`;
         if (data.meals === null) {
-          resultHeading.innerHTML = `<p>There are no search results. Try again!</p>`;
+          result.innerHTML = `<p>There are no search results. Try again!</p>`;
         } else {
-          mealsEl.innerHTML = data.meals
+          mealsElement.innerHTML = data.meals
             .map(
               (meal) => `
             <div class="meal">
@@ -43,8 +43,8 @@ function getMealById(mealID) {
     });
 }
 function getRandomMeal() {
-  mealsEl.innerHTML = "";
-  resultHeading.innerHTML = "";
+  mealsElement.innerHTML = "";
+  result.innerHTML = "";
   fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
     .then((res) => res.json())
     .then((data) => {
@@ -63,7 +63,7 @@ function addMealToDOM(meal) {
       break;
     }
   }
-  single_mealEl.innerHTML = `
+  mealItem.innerHTML = `
   <div class="single-meal">
     <h1>${meal.strMeal}</h1>
     <img src="${meal.strMealThumb}" alt="${meal.strMeal}"/>
@@ -81,7 +81,7 @@ function addMealToDOM(meal) {
   </div>`;
 }
 form.addEventListener("submit", searchMeal);
-mealsEl.addEventListener("click", (e) => {
+mealsElement.addEventListener("click", (e) => {
   const mealInfo = e.path.find((item) => {
     if (item.classList) {
       return item.classList.contains("meal-info");
